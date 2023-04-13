@@ -1,0 +1,12 @@
+{
+  "name": "bufignore.nvim",
+  "version": "1.0.0",
+  "author": "Oskar Grunning",
+  "description": "Unlist hidden buffers that are git ignored.",
+  "homepage": "https://github.com/sQVe/bufignore.nvim",
+  "repository": "github:sQVe/bufignore.nvim#readme",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "latest"
+  }
+}
