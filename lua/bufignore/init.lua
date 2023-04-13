@@ -16,6 +16,12 @@ end
 
 --- Starts the plugin.
 M.start = function()
+  if not vim.o.hidden then
+    print("The bufignore plugin requires the 'hidden' option to be enabled.")
+    print("Please add 'set hidden' to your Vim configuration.")
+    return
+  end
+
   dispatcher.bind_events()
 end
 
