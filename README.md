@@ -1,9 +1,9 @@
 # 👁️ bufignore
 
 **Bufignore** is a plugin for [Neovim](https://neovim.io) that helps you keep
-your buffer list **tidy** by unlisting buffers that are Git ignored. It was
-created to solve the annoyance of a cluttered buffer list when working with Git
-ignored files, for example, files within `.git` or `node_modules`.
+your buffer list **tidy** by unlisting hidden buffers that are Git ignored. It
+was created to solve the annoyance of a cluttered buffer list when working with
+Git ignored files, for example, files within `.git` or `node_modules`.
 
 <br />
 
@@ -13,14 +13,15 @@ https://user-images.githubusercontent.com/2284724/232234047-e170007b-7f31-4e6b-b
 
 ## ✨ Features
 
-- Efficient by utilizing a queue for all events that feeds batches of buffer
+- Only targets hidden buffers, i.e., not visible in any window.
+- Efficiently utilizes a queue for all events, which feeds batches of buffer
   events into processing.
 - Supports changing the current working directory by testing all current
   buffers.
-- Works out-of-the-box without needing to tweak configuration.
+- Works out-of-the-box without requiring any configuration tweaking.
 - Provides a callback to allow you to further configure when a buffer should be
   unlisted.
-- Ignores files outside of current working directory.
+- Ignores files outside the current working directory.
 
 <br />
 
