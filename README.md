@@ -5,6 +5,8 @@ your buffer list **tidy** by unlisting buffers that are Git ignored. It was
 created to solve the annoyance of a cluttered buffer list when working with Git
 ignored files, for example, files within `.git` or `node_modules`.
 
+<br />
+
 ## ✨ Features
 
 - Efficient by utilizing a queue for all events that feeds batches of buffer
@@ -16,10 +18,14 @@ ignored files, for example, files within `.git` or `node_modules`.
   unlisted.
 - Ignores files outside of current working directory.
 
+<br />
+
 ## ⚡ Requirements
 
 - [Neovim](https://neovim.io), with the `hidden` option set to `on`.
 - [Git](https://git-scm.com).
+
+<br />
 
 ## 📦 Installation
 
@@ -48,6 +54,8 @@ use({
   end
 })
 ```
+
+<br />
 
 ## ⚙ Configuration
 
@@ -81,6 +89,8 @@ The unlisting process will only proceed if the callback function returns `true`.
 Return `true` to proceed with the unlisting process, or anything else to prevent
 the buffer from being unlisted.
 
+<br />
+
 ## 📗 Usage
 
 Bufignore works out-of-the-box with the `auto_start` option enabled. The
@@ -99,6 +109,8 @@ Start the plugin.
 
 Stop the plugin.
 
+<br />
+
 ## 🤝 Contributing
 
 All contributions to Bufignore are greatly appreciated, whether it's a bug fix
@@ -112,6 +124,8 @@ Before making a pull request, please consider the following:
   - Install [Stylua](https://github.com/johnnymorganz/stylua) to ensure proper
     formatting.
 - Write clear and concise commit messages that describe the changes you've made.
+
+<br />
 
 ## 🏁 Roadmap
 
