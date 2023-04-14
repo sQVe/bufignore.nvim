@@ -1,4 +1,4 @@
-# bufignore
+# 👁️ bufignore
 
 **Bufignore** is a plugin for [Neovim](https://neovim.io) that helps you keep
 your buffer list **tidy** by unlisting buffers that are Git ignored. It was
