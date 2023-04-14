@@ -18,10 +18,10 @@ M._is_valid_for_unlisting = function(bufnr, file_path)
     and vim.api.nvim_buf_is_loaded(bufnr)
     -- Buffer is listed
     and vim.api.nvim_buf_get_option(bufnr, 'buflisted')
-    -- User-defined callback is either falsy or returns true.
+    -- User-defined pre_unlist callback is either falsy or returns true.
     and (
-      not user_config.callback
-      or user_config.callback({ bufnr = bufnr, file_path = file_path })
+      not user_config.pre_unlist
+      or user_config.pre_unlist({ bufnr = bufnr, file_path = file_path })
     )
 end
 
