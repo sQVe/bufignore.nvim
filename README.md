@@ -7,7 +7,7 @@ ignored files, for example, files within `.git` or `node_modules`.
 
 <br />
 
-https://user-images.githubusercontent.com/2284724/232232774-5e99918f-f9c3-4d4c-8a3f-42144eda8885.mp4
+https://user-images.githubusercontent.com/2284724/232234047-e170007b-7f31-4e6b-b727-ec62a0196710.mp4
 
 <br />
 
