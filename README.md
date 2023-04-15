@@ -7,6 +7,10 @@ ignored files, for example, files within `.git` or `node_modules`.
 
 <br />
 
+https://user-images.githubusercontent.com/2284724/232232774-5e99918f-f9c3-4d4c-8a3f-42144eda8885.mp4
+
+<br />
+
 ## ✨ Features
 
 - Efficient by utilizing a queue for all events that feeds batches of buffer
