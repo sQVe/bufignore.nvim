@@ -136,7 +136,7 @@ Before making a pull request, please consider the following:
 
 - [ ] Performance improvements:
   - [ ] Check if current working directory is a Git repository before starting.
-  - [ ] Avoid processing duplicate file paths.
+  - [x] Avoid processing duplicate file paths.
 - [ ] Provide a single Bufignore command, with sub-commands to execute different
       actions.
 - [ ] Optional: Unlist files that are outside of the Git repository.
