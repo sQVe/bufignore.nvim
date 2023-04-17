@@ -11,9 +11,17 @@ M._is_running = false
 M._queue = {}
 M._throttle_ms = 400
 
+--- Checks if file is already enqueued for processing.
+--- @param file_path string The file path to check.
+--- @return boolean is_file_in_queue `true` if the file path is valid, otherwise `false`.
+--- @private
+M._is_file_in_queue = function(file_path)
+  return vim.tbl_contains(M._queue, file_path)
+end
+
 --- Validates a file.
 --- @param file_path string The file path to validate.
---- @return boolean valid_file_path `true` if the file path is valid, otherwise `false`.
+--- @return boolean is_valid_file_path `true` if the file path is valid, otherwise `false`.
 --- @private
 M._is_valid_file = function(file_path)
   local is_non_empty_file_path = file_path ~= nil and file_path:len() > 0
@@ -31,7 +39,7 @@ end
 --- Adds an event to the queue, and starts processing if not already running.
 --- @param file_path string
 M.enqueue_file = function(file_path)
-  if M._is_valid_file(file_path) then
+  if not M._is_file_in_queue(file_path) and M._is_valid_file(file_path) then
     local absolute_file_path = vim.fn.fnamemodify(file_path, ':p')
 
     table.insert(M._queue, absolute_file_path)
