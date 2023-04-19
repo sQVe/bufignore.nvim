@@ -20,32 +20,20 @@ M._is_file_in_queue = function(file_path)
 end
 
 --- Validates a file.
---- @param file_path string The file path to validate.
+--- @param relative_file_path string The relative file path to validate.
+--- @param absolute_file_path string The absolute file path to validate.
 --- @return boolean is_valid_file_path `true` if the file path is valid, otherwise `false`.
 --- @private
-M._is_valid_file = function(file_path)
-  local is_non_empty_file_path = file_path ~= nil and file_path:len() > 0
-  local is_file_path_in_cwd = vim.startswith(file_path, vim.fn.getcwd())
+M._is_valid_file = function(relative_file_path, absolute_file_path)
+  local is_non_empty_file_path = relative_file_path ~= nil
+    and relative_file_path:len() > 0
+
+  local is_file_path_in_cwd = false
+  if is_non_empty_file_path then
+    is_file_path_in_cwd = vim.startswith(absolute_file_path, vim.fn.getcwd())
+  end
 
   return is_non_empty_file_path and is_file_path_in_cwd
-end
-
---- Clears the event queue.
-M.clear_queue = function()
-  M._queue = {}
-  M._is_running = false
-end
-
---- Adds an event to the queue, and starts processing if not already running.
---- @param file_path string
-M.enqueue_file = function(file_path)
-  if not M._is_file_in_queue(file_path) and M._is_valid_file(file_path) then
-    local absolute_file_path = vim.fn.fnamemodify(file_path, ':p')
-
-    table.insert(M._queue, absolute_file_path)
-
-    M._process_queue()
-  end
 end
 
 --- Processes pending file paths in the queue after the throttle time, if not already running.
@@ -64,6 +52,36 @@ M._process_queue = function()
 
     M.clear_queue()
   end, M._throttle_ms)
+end
+
+--- Clears the event queue.
+M.clear_queue = function()
+  M._queue = {}
+  M._is_running = false
+end
+
+--- Adds an event to the queue, and starts processing if not already running.
+--- @param relative_file_path string The relative file path to enqueue.
+M.enqueue_file = function(relative_file_path)
+  local absolute_file_path = vim.fn.fnamemodify(relative_file_path, ':p')
+
+  if
+    not M._is_file_in_queue(absolute_file_path)
+    and M._is_valid_file(relative_file_path, absolute_file_path)
+  then
+    table.insert(M._queue, absolute_file_path)
+
+    M._process_queue()
+  end
+end
+
+--- Enqueus all current buffers in list for processing.
+M.enqueue_current_buffer_list = function()
+  local bufnrs = vim.api.nvim_list_bufs()
+
+  for _, bufnr in ipairs(bufnrs) do
+    M.enqueue_file(vim.api.nvim_buf_get_name(bufnr))
+  end
 end
 
 return M

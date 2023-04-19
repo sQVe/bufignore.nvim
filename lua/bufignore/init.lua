@@ -1,5 +1,6 @@
 local config = require('bufignore.config')
 local dispatcher = require('bufignore.dispatcher')
+local queue = require('bufignore.queue')
 
 --- @class Init
 local M = {}
@@ -28,6 +29,7 @@ end
 --- Stops the plugin.
 M.stop = function()
   dispatcher.unbind_events()
+  queue.clear_queue()
 end
 
 return M
