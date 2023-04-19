@@ -3,7 +3,7 @@
 **Bufignore** is a plugin for [Neovim](https://neovim.io) that helps you keep
 your buffer list **tidy** by unlisting hidden buffers that are Git ignored. It
 was created to solve the annoyance of a cluttered buffer list when working with
-Git ignored files, for example, files within `.git` or `node_modules`.
+Git ignored files, for example, files within `node_modules`.
 
 <br />
 
