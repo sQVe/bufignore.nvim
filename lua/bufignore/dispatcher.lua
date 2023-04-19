@@ -1,4 +1,5 @@
-local git = require('bufignore.git')
+local config = require('bufignore.config')
+local checker = require('bufignore.checker')
 local queue = require('bufignore.queue')
 
 local augroups = {}
@@ -77,16 +78,21 @@ end
 
 -- Binds event listeners for the plugin.
 M.bind_events = function()
+  local user_config = config.get_user_config()
+
   vim.schedule(function()
-    if M._is_git_repository == nil then
-      git.is_git_repository(vim.fn.getcwd(), function(_, exit_code)
+    if user_config.ignore_sources.git and M._is_git_repository == nil then
+      checker.is_git_repository(vim.fn.getcwd(), function(_, exit_code)
         M._is_git_repository = exit_code == 0
         M.bind_events()
       end)
     end
 
     M._bind_dir_changed_event()
-    if M._is_git_repository then
+    if
+      (user_config.ignore_sources.git and M._is_git_repository)
+      or vim.tbl_count(user_config.ignore_sources.patterns) > 0
+    then
       queue.enqueue_current_buffer_list()
       M._bind_buf_hidden_event()
     else

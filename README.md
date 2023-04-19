@@ -1,9 +1,10 @@
 # 👁️ bufignore
 
-**Bufignore** is a plugin for [Neovim](https://neovim.io) that helps you keep
-your buffer list **tidy** by unlisting hidden buffers that are Git ignored. It
-was created to solve the annoyance of a cluttered buffer list when working with
-Git ignored files, for example, files within `node_modules`.
+**Bufignore** is a plugin for Neovim that helps you keep your buffer list
+organized by **automatically unlisting hidden buffers** that match specific
+ignore sources, such as a Lua pattern or Git ignored files. It was designed to
+solve the annoyance of a cluttered buffer list when working with Git ignored
+files, such as those within `.git` or `node_modules`.
 
 <br />
 
@@ -11,17 +12,25 @@ https://user-images.githubusercontent.com/2284724/232234047-e170007b-7f31-4e6b-b
 
 <br />
 
-## ✨ Features
+## ✨ Key features
 
-- Only targets hidden buffers, i.e., not visible in any window.
-- Efficiently utilizes a queue for all events, which feeds batches of buffer
-  events into processing.
-- Supports changing the current working directory by testing all current
-  buffers.
-- Works out-of-the-box without requiring any configuration tweaking.
-- Provides a callback to allow you to further configure when a buffer should be
-  unlisted.
-- Ignores files outside the current working directory.
+- **Multiple ignore sources**: You can define multiple ignore sources, such as
+  Lua patterns and Git ignored files, to filter out hidden buffers that match
+  these patterns.
+- **Tidy buffer list**: It unlists hidden buffers that match the defined ignore
+  sources to keep your buffer list tidy.
+- **Efficient event processing**: The plugin efficiently utilizes a queue for
+  all events, which feeds batches of buffer events into processing.
+- **Supports changing working directory**: Bufignore supports changing the
+  current working directory by testing all current buffers, and only unlists
+  files that are ignored and within the current working directory.
+- **Out-of-the-box usage**: Bufignore works out-of-the-box without requiring any
+  configuration tweaking.
+- **Customizable**: Bufignore provides a callback function that allows you to
+  further configure which buffers should be unlisted based on your needs.
+- **Ignores files outside the current working directory**: Bufignore only
+  considers files within the current working directory, ignoring files outside
+  it.
 
 <br />
 
@@ -29,6 +38,7 @@ https://user-images.githubusercontent.com/2284724/232234047-e170007b-7f31-4e6b-b
 
 - [Neovim](https://neovim.io), with the `hidden` option set to `on`.
 - [Git](https://git-scm.com).
+- [plenary.nvim](https://github.com/nvim-lua/plenary.nvim).
 
 <br />
 
@@ -39,6 +49,7 @@ https://user-images.githubusercontent.com/2284724/232234047-e170007b-7f31-4e6b-b
 ```lua
 {
   'sQVe/bufignore.nvim',
+  dependencies = { 'nvim-lua/plenary.nvim' },
   opts = {
     -- Input configuration here.
     -- Refer to the configuration section below for options.
@@ -51,6 +62,7 @@ https://user-images.githubusercontent.com/2284724/232234047-e170007b-7f31-4e6b-b
 ```lua
 use({
   'sQVe/bufignore.nvim',
+  requires = { 'nvim-lua/plenary.nvim' },
   config = function()
     require("bufignore").setup({
       -- Input configuration here.
@@ -69,6 +81,10 @@ The following code block shows the available options and their defaults:
 ```lua
 {
   auto_start = true,
+  ignore_sources = {
+    git = true,
+    patterns = { '/%.git/' },
+  },
   pre_unlist = nil,
 }
 ```
@@ -77,6 +93,20 @@ The following code block shows the available options and their defaults:
 
 A `boolean` value that determines whether to start the plugin automatically
 after calling `setup()`.
+
+#### `ignore_sources`
+
+A `table` that sets which sources to use when checking whether a file is
+supposed to be unlisted or not.
+
+###### `git`
+
+A `boolean` value that determines whether Git ignored files are unlisted or not.
+
+###### `patterns`
+
+A `table` of Lua patterns that determines whether the file should be unlisted or
+not.
 
 #### `pre_unlist`
 
@@ -102,7 +132,7 @@ Bufignore works out-of-the-box with the `auto_start` option enabled. The
 following API is available under `require('bufignore')` if you want to handle
 things manually:
 
-### `setup`
+#### `setup`
 
 Sets up the plugin, see [configuration](#configuration) for further information.
 
@@ -137,10 +167,13 @@ Before making a pull request, please consider the following:
 - [x] Performance improvements:
   - [x] Check if current working directory is a Git repository before starting.
   - [x] Avoid processing duplicate file paths.
+- [ ] Support for extending ignore lookup beyond Git.
+  - [x] Lua patterns.
+  - [ ] Filetypes.
+  - [ ] Outside the Git repository.
+  - [ ] Outside the current working directory.
+  - [ ] Custom callback.
+- [ ] Allow opting out of unlisting when buffer is either modified or has
+      entered insert mode.
 - [ ] Provide a single Bufignore command, with sub-commands to execute different
-      actions.
-- [ ] Optional: Support for extending ignore lookup beyond Git, such as, using
-      Lua patterns.
-- [ ] Optional: Allow opting out of unlisting when buffer is either modified or
-      has entered insert mode.
-- [ ] Optional: Unlist files that are outside of the Git repository. has been in
+      actions. entered insert mode.
