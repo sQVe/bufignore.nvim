@@ -134,13 +134,13 @@ Before making a pull request, please consider the following:
 
 ## 🏁 Roadmap
 
-- [ ] Performance improvements:
-  - [ ] Check if current working directory is a Git repository before starting.
+- [x] Performance improvements:
+  - [x] Check if current working directory is a Git repository before starting.
   - [x] Avoid processing duplicate file paths.
 - [ ] Provide a single Bufignore command, with sub-commands to execute different
       actions.
-- [ ] Optional: Unlist files that are outside of the Git repository.
 - [ ] Optional: Support for extending ignore lookup beyond Git, such as, using
       Lua patterns.
 - [ ] Optional: Allow opting out of unlisting when buffer is either modified or
-      has been in insert mode.
+      has entered insert mode.
+- [ ] Optional: Unlist files that are outside of the Git repository. has been in
