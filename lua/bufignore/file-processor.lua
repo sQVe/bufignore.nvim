@@ -4,8 +4,8 @@ local config = require('bufignore.config')
 local M = {}
 
 --- Checks if a buffer meets the requirements for unlisting.
---- @param bufnr number The buffer number.
---- @param file_path string The path of the file associated with the buffer.
+--- @param bufnr number
+--- @param file_path string
 --- @return boolean `true` if the buffer meets the unlisting requirements, otherwise `false`.
 M._is_valid_for_unlisting = function(bufnr, file_path)
   local user_config = config.get_user_config()
@@ -26,10 +26,9 @@ M._is_valid_for_unlisting = function(bufnr, file_path)
 end
 
 --- Unlists a buffer for an ignored file.
---- @param file_path string The path of the ignored file.
+--- @param file_path string
 --- @private
 M._unlist_ignored_file = function(file_path)
-  -- Schedules main event-loop invocation to preventing textlock issues.
   vim.schedule(function()
     ---@diagnostic disable-next-line: param-type-mismatch
     local bufnr = vim.fn.bufnr(file_path)
@@ -42,7 +41,7 @@ M._unlist_ignored_file = function(file_path)
 end
 
 --- Unlists buffers for ignored files.
----@param file_paths string[] The paths of the ignored files.
+--- @param file_paths string[]
 M.unlist_ignored_files = function(file_paths)
   for _, file_path in ipairs(file_paths) do
     M._unlist_ignored_file(file_path)

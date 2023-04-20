@@ -1,4 +1,5 @@
-local git = require('bufignore.git')
+local checker = require('bufignore.checker')
+local config = require('bufignore.config')
 local file_processor = require('bufignore.file-processor')
 
 --- @class Queue
@@ -46,9 +47,29 @@ M._process_queue = function()
   M._is_running = true
 
   vim.defer_fn(function()
+    local user_config = config.get_user_config()
     local pending_files = vim.deepcopy(M._queue)
 
-    git.check_ignore(pending_files, file_processor.unlist_ignored_files)
+    if vim.tbl_count(user_config.ignore_sources.patterns) > 0 then
+      local pattern_ignored_files =
+        checker.get_pattern_ignored_files(pending_files)
+
+      if vim.tbl_count(pattern_ignored_files) > 0 then
+        file_processor.unlist_ignored_files(pattern_ignored_files)
+
+        -- Remove any file that is already ignored via a pattern.
+        pending_files = vim.tbl_filter(function(pending_file)
+          return not vim.tbl_contains(pattern_ignored_files, pending_file)
+        end, pending_files)
+      end
+    end
+
+    if user_config.ignore_sources.git then
+      checker.get_git_ignored_files(
+        pending_files,
+        file_processor.unlist_ignored_files
+      )
+    end
 
     M.clear_queue()
   end, M._throttle_ms)
@@ -61,7 +82,7 @@ M.clear_queue = function()
 end
 
 --- Adds an event to the queue, and starts processing if not already running.
---- @param relative_file_path string The relative file path to enqueue.
+--- @param relative_file_path string
 M.enqueue_file = function(relative_file_path)
   local absolute_file_path = vim.fn.fnamemodify(relative_file_path, ':p')
 
