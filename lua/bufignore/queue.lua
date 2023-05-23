@@ -64,6 +64,15 @@ M._process_queue = function()
       end
     end
 
+    if user_config.ignore_sources.symlink then
+      local symlinked_files = checker.get_symlinked_files(pending_files)
+
+      -- Remove any symlinked file.
+      pending_files = vim.tbl_filter(function(pending_file)
+        return not vim.tbl_contains(symlinked_files, pending_file)
+      end, pending_files)
+    end
+
     if user_config.ignore_sources.git then
       checker.handle_git_ignored_files(
         pending_files,
