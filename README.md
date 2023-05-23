@@ -84,6 +84,7 @@ The following code block shows the available options and their defaults:
   ignore_sources = {
     git = true,
     patterns = { '/%.git/' },
+    symlink = true,
   },
   pre_unlist = nil,
 }
@@ -107,6 +108,10 @@ A `boolean` value that determines whether Git ignored files are unlisted or not.
 
 A `table` of Lua patterns that determines whether the file should be unlisted or
 not.
+
+###### `symlink`
+
+A `boolean` value that determines whether symlinked files are unlisted or not.
 
 #### `pre_unlist`
 
@@ -169,6 +174,7 @@ Before making a pull request, please consider the following:
   - [x] Avoid processing duplicate file paths.
 - [ ] Support for extending ignore lookup beyond Git.
   - [x] Lua patterns.
+  - [x] Symlinks.
   - [ ] Filetypes.
   - [ ] Outside the Git repository.
   - [ ] Outside the current working directory.
