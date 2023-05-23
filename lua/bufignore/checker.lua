@@ -56,6 +56,19 @@ M.get_pattern_ignored_files = function(file_paths)
   end, file_paths)
 end
 
+--- Handle files are ignored by Git.
+--- @param file_paths string[]
+--- @param callback GitCallback
+M.handle_git_ignored_files = function(file_paths, callback)
+  local args = { 'check-ignore' }
+
+  for _, file_path in ipairs(file_paths) do
+    table.insert(args, file_path)
+  end
+
+  M._execute_git(args, callback)
+end
+
 --- Checks if directory is a Git repository.
 --- @param directory string
 --- @param callback GitCallback

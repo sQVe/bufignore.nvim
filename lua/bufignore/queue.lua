@@ -65,7 +65,7 @@ M._process_queue = function()
     end
 
     if user_config.ignore_sources.git then
-      checker.get_git_ignored_files(
+      checker.handle_git_ignored_files(
         pending_files,
         file_processor.unlist_ignored_files
       )
