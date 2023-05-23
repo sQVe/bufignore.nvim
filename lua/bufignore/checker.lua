@@ -27,17 +27,14 @@ M._execute_git = function(args, callback)
   }):start()
 end
 
---- Checks if files are ignored by Git.
+--- Checks if files are symlinked.
 --- @param file_paths string[]
---- @param callback GitCallback
-M.get_git_ignored_files = function(file_paths, callback)
-  local args = { 'check-ignore' }
+M.get_symlinked_files = function(file_paths)
+  return vim.tbl_filter(function(file_path)
+    local stat = vim.loop.fs_lstat(file_path)
 
-  for _, file_path in ipairs(file_paths) do
-    table.insert(args, file_path)
-  end
-
-  M._execute_git(args, callback)
+    return stat ~= nil and stat.type == 'link'
+  end, file_paths)
 end
 
 --- Checks if files are ignored by Lua patterns.
@@ -54,6 +51,19 @@ M.get_pattern_ignored_files = function(file_paths)
 
     return false
   end, file_paths)
+end
+
+--- Handle files are ignored by Git.
+--- @param file_paths string[]
+--- @param callback GitCallback
+M.handle_git_ignored_files = function(file_paths, callback)
+  local args = { 'check-ignore' }
+
+  for _, file_path in ipairs(file_paths) do
+    table.insert(args, file_path)
+  end
+
+  M._execute_git(args, callback)
 end
 
 --- Checks if directory is a Git repository.
