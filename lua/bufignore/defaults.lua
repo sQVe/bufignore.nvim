@@ -2,6 +2,7 @@
 --- @field git boolean Whether to unlist a git ignored file or not.
 --- @field patterns string[] A table of Lua patterns to determine if the file should be unlisted or not.
 --- @field symlink boolean Whether to unlist a symlinks or not.
+--- @field ignore_cwd_only boolean Whether to only unlist files in the current working directory or not.
 
 --- @alias PreUnlist fun(event: { bufnr: number, file_path: string }): boolean
 
@@ -15,6 +16,7 @@ local defaults = {
     git = true,
     patterns = { '/%.git/' },
     symlink = true,
+    ignore_cwd_only = true,
   },
   pre_unlist = nil,
 }

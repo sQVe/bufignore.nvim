@@ -23,11 +23,16 @@ end
 --- Validates a file.
 --- @param relative_file_path string The relative file path to validate.
 --- @param absolute_file_path string The absolute file path to validate.
+--- @param ignore_cwd_only boolean Whether to only validate files in the current working directory or not.
 --- @return boolean is_valid_file_path `true` if the file path is valid, otherwise `false`.
 --- @private
-M._is_valid_file = function(relative_file_path, absolute_file_path)
+M._is_valid_file = function(relative_file_path, absolute_file_path, ignore_cwd_only)
   local is_non_empty_file_path = relative_file_path ~= nil
     and relative_file_path:len() > 0
+
+  if ignore_cwd_only == nil or not ignore_cwd_only then
+    return is_non_empty_file_path
+  end
 
   local is_file_path_in_cwd = false
   if is_non_empty_file_path then
@@ -93,11 +98,16 @@ end
 --- Adds an event to the queue, and starts processing if not already running.
 --- @param relative_file_path string
 M.enqueue_file = function(relative_file_path)
+    local user_config = config.get_user_config()
   local absolute_file_path = vim.fn.fnamemodify(relative_file_path, ':p')
 
   if
     not M._is_file_in_queue(absolute_file_path)
-    and M._is_valid_file(relative_file_path, absolute_file_path)
+    and M._is_valid_file(
+      relative_file_path,
+      absolute_file_path,
+      user_config.ignore_sources.ignore_cwd_only
+      )
   then
     table.insert(M._queue, absolute_file_path)
 
