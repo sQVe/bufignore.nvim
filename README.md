@@ -85,6 +85,7 @@ The following code block shows the available options and their defaults:
     git = true,
     patterns = { '/%.git/' },
     symlink = true,
+    ignore_cwd_only = true,
   },
   pre_unlist = nil,
 }
@@ -112,6 +113,11 @@ not.
 ###### `symlink`
 
 A `boolean` value that determines whether symlinked files are unlisted or not.
+
+###### `ignore_cwd_only`
+
+A `boolean` value that determines whether to only unlist files that are within
+the current working directory.
 
 #### `pre_unlist`
 
@@ -177,7 +183,7 @@ Before making a pull request, please consider the following:
   - [x] Symlinks.
   - [ ] Filetypes.
   - [ ] Outside the Git repository.
-  - [ ] Outside the current working directory.
+  - [x] Outside the current working directory.
   - [ ] Custom callback.
 - [ ] Allow opting out of unlisting when buffer is either modified or has
       entered insert mode.
