@@ -4,7 +4,7 @@ local config = require('bufignore.config')
 local M = {}
 
 --- Checks if a buffer meets the requirements for unlisting.
---- @param bufnr number
+--- @param bufnr integer
 --- @param file_path string
 --- @return boolean `true` if the buffer meets the unlisting requirements, otherwise `false`.
 M._is_valid_for_unlisting = function(bufnr, file_path)
@@ -17,7 +17,7 @@ M._is_valid_for_unlisting = function(bufnr, file_path)
     -- Buffer is loaded
     and vim.api.nvim_buf_is_loaded(bufnr)
     -- Buffer is listed
-    and vim.api.nvim_buf_get_option(bufnr, 'buflisted')
+    and vim.api.nvim_get_option_value('buflisted', { buf = bufnr })
     -- User-defined pre_unlist callback is either falsy or returns true.
     and (
       not user_config.pre_unlist
@@ -33,9 +33,11 @@ M._unlist_ignored_file = function(file_path)
     ---@diagnostic disable-next-line: param-type-mismatch
     local bufnr = vim.fn.bufnr(file_path)
 
-    if M._is_valid_for_unlisting(bufnr, file_path) then
-      -- Unlist git ignored file buffer.
-      vim.api.nvim_buf_set_option(bufnr, 'buflisted', false)
+    if bufnr ~= nil then
+      if M._is_valid_for_unlisting(bufnr, file_path) then
+        -- Unlist git ignored file buffer.
+        vim.api.nvim_set_option_value('buflisted', false, { buf = bufnr })
+      end
     end
   end)
 end
